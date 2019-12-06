@@ -1,0 +1,176 @@
+es:
+  activerecord:
+    models:
+      user:
+        one: Usuario
+        other: Usuarios
+      admin_user:
+        one: Administrador
+        other: Administradores
+      professional_school:
+        one: Escuela Profesional
+        other: Escuelas Profesionales
+      study_cycle:
+        one: Ciclo
+        other: Ciclos
+      study_group:
+        one: Grupo
+        other: Grupos
+      person:
+        one: Persona
+        other: Personas
+      student:
+        one: Estudiante
+        other: Estudiantes
+      student_responsible:
+        one: Responsable de Estudiante
+        other: Responsables de Estudiantes
+      responsible_type:
+        one: Tipo de Responsable
+        other: Tipos de Responsable
+      catalogue:
+        one: Catálogo
+        other: Catálogos
+      catalogue_location:
+        one: Catalogo de lugares
+        other: Catalogo de lugares
+      visit:
+        one: Visita
+        other: Visitas
+      religious_affiliation:
+        one: Filiación Religiosa
+        other: Filiaciones Religiosas
+      religion:
+        one: Religión
+        other: Religiones
+      poll:
+        one: Reporte
+        other: Reportes
+      derivation:
+        one: Derivación
+        other: Derivaciones
+    attributes:
+      user: 
+        user_type: 'Tipo de usuario'
+        email: 'Correo Electrónico'
+        password: 'Contraseña'
+        status: 'Estado'
+      admin_user:
+        email: 'Correo Electrónico'
+        password: 'Contraseña'
+        name: 'Nombre'
+      professional_school:
+        name: 'Nombre'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+      study_cycle:
+        name: 'Nombre'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+      study_group:
+        name: 'Nombre'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+      person:
+        code: 'Código'
+        first_name: 'Nombre'
+        last_name: 'Apellidos'
+        dni: 'DNI'
+        phone: 'Teléfono'
+        email: 'Correo Electrónico'
+        type: 'Tipo'
+        person_type: 'Tipo de persona'
+        user: 'Usuario'
+        user_id: 'Usuario'
+        department: 'Departamento'
+        province: 'Provincia'
+        district: 'Distrito'
+        department_id: 'Departamento'
+        province_id: 'Provincia'
+        district_id: 'Distrito'
+      student:
+        person: 'Persona'
+        person_id: 'Persona'
+        professional_school: 'Escuela profesional'
+        professional_school_id: 'Escuela profesional'
+        study_cycle: 'Ciclo'
+        study_cycle_id: 'Ciclo'
+        study_group: 'Grupo'
+        study_group_id: 'Grupo'
+        student_type: 'Tipo de estudiante'
+        address: 'Dirección'
+        reference: 'Referencia'
+        type: 'Tipo'
+        urgent: 'Urgente'
+        lat: 'Latitud'
+        lng: 'Longitud'
+        photo: 'Foto'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+        church: 'Iglesia'
+        church_id: 'Iglesia'
+        church_adresss: 'Iglesia'
+        sabbath_school_class: 'Escuela Sabática'
+        baptized: 'Bautizado'
+        address: 'Dirección'
+        church_adresss_id: 'Iglesia'
+        sabbath_school_class_id: 'Escuela Sabática'
+        baptized_id: 'Bautizado'
+        address_id: 'Dirección'
+      student_responsible:
+        name: 'Nombre'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+      responsible_type:
+        name: 'Nombre'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+      catalogue_location:
+        name: 'Nombre'
+        parent: 'Padre'
+        parent_id: 'Padre'
+
+        catalogue_type: 'Tipo Catalogo'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+      catalogue:
+        name: 'Nombre'
+        parent : 'Padre'
+        catalogue_type: 'Tipo Catalogo'
+      visit:
+
+        visit_date: 'Fecha de Visita'
+        closing_date: 'Fecha de Cierre'
+        status: 'Estado'
+        scheduled_date: 'Fecha de Visita Programada'
+        visit_date_finished: 'Fecha de Visita Terminada'
+        user: 'Usuario'
+        student_id: 'Estudiante'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+
+      religious_affiliation:
+        church_adresss: 'Iglesia'
+        sabbath_school_class: 'Escuela Sabática'
+        baptized: 'Bautizado'
+        address: 'Dirección'
+      religion:
+        name: 'Nombre'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+      poll:
+        visit: 'Visita'
+        visit_id: 'Visita'
+        derivations: 'Derivacion'
+        derivations_id: 'Derivacion'
+        academic_aspect: 'Aspecto Académico'
+        psychological_aspect: 'Aspecto Psicológico'
+        health_aspect: 'Aspecto de Salud'
+        economic_aspect: ' Aspecto Económico'
+        spiritual_aspect: 'Aspecto Espiritual'
+        photo: 'Foto de Evidencia'
+        created_at: 'Fecha creada'
+        updated_at: 'Fecha actualizada'
+        evidence: 'Evidencia'
+        others : 'Otros'
+      derivation:

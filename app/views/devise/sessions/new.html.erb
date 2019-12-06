@@ -1,0 +1,35 @@
+<div class='contentLogin'>
+  <div class='panel'>
+    <div class='contentImg'>
+      <%= image_tag  "logoDark.png" %>
+    </div>
+    <div class='contentForm'>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="panelinputContent">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email" , class:'input' %>
+          <i class="fas fa-user inputIcon" ></i>
+        </div>
+
+        <div class="panelinputContent">
+          <%= f.password_field :password, autocomplete: "current-password" , class:'input'%>
+          <i class="fas fa-lock inputIcon" ></i>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="field">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me , class:'textLabel'%>
+          </div>
+        <% end %>
+
+        <div class="contentButtons">
+          <%= f.submit "Ingresar" , class:'button'%>
+        </div>
+      <% end %>
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>
+
+

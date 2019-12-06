@@ -1,0 +1,58 @@
+<div class='navBar'>
+  <div class='headTop'>
+    <div class='container'>
+      <div class='Content'>
+        <a class="" href="#"><%= image_tag  "logo.png" %></a>
+        <div class='headTop-content'>
+          <p class='headTop-content-user'>Hola, <%= current_user.person.decorate.full_name %></p>
+          <div class='headTop-content-profile' id='profile'>
+            <%= current_user.person.first_name.split.map(&:first).join %> 
+          </div>
+          <div class='ContentProfile' id='contentProfile'>
+            <div class='container'>
+              <div class='ContentProfile-logoImg'>
+                <%= current_user.person.first_name.split.map(&:first).join %> 
+
+              </div>
+              <p class='ContentProfile-name'><%= current_user.person.decorate.full_name %><p>
+              
+            </div>
+            <% if current_user.user_type == 'visitor' %>
+              <div class='containerOptions'>
+                <div class='ContentProfile-options'>
+                  <p class='ContentProfile-options-profileText'><%= link_to "Perfil", profile_path %></p>
+                  <i class="fas fa-user ContentProfile-options-iconUser"></i>
+                </div>
+              </div>
+            <% end %>
+
+            <div class='ContentProfile-offUser'>
+              <% if user_signed_in? %>
+                <p class='ContentProfile-offUser-text'><%= link_to "Cerrar sesión", destroy_user_session_path, :method => :delete %></p>
+              <% end %>
+              <i class="fas fa-power-off ContentProfile-offUser-icon"></i>  
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <% if current_user.user_type == 'visitor' %>
+    <div class='headBottom'>
+      <div class='container'>
+        <div class="NavBar" >
+          <% @menu.each do |m|%>
+            <p class="NavBar-list">
+              <%= link_to m[:url], class: ("active" if request.original_fullpath == m[:url] ) do %>
+                <%= m[:name] %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+      </div> 
+    </div>
+  <% end %>
+   
+
+</div>

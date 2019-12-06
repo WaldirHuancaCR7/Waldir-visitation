@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ProjectVisitation</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all'%>
+    <%= stylesheet_pack_tag 'application' %>
+    <%= javascript_pack_tag 'application' %>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/0a565ebf9f.js" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <%= render 'partials/header' %>
+    <% if notice %>
+      <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert %>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
+    <%= yield %>
+
+      <script>
+
+
+
+
+        function noenter(evt) {
+          var evt = (evt) ? evt : ((event) ? event : null);
+          var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+          if ((evt.keyCode == 13) && (node.type=="text"))  {return false;}
+        }
+
+
+
+        const profile_click= document.getElementById('profile')
+        const content_profile = document.getElementById('contentProfile')
+
+        profile_click.addEventListener('click', () => {
+          if (content_profile.className == 'ContentProfile') {
+            content_profile.classList.add("openContentProfile")
+          } else {
+            content_profile.classList.remove("openContentProfile")
+
+          }
+        })
+          var markers= []
+
+        function initMap() {
+          if (document.getElementById("latMap") && document.getElementById("lngMap")) {
+              let latVal = document.getElementById("latMap").value
+              let lngVal = document.getElementById("lngMap").value
+              let map2;
+              if (latVal == '' && lngVal == '') {
+
+                map2 = new google.maps.Map(document.getElementById('map2'), {
+                  center: { lat:-15.4954666, lng:-70.1416507},
+                  zoom: 13,
+                  mapTypeId: 'roadmap',
+                })
+                markers = new google.maps.Marker({
+                  map: map2,
+                  title: 'Hello World!',
+                  position: {lat:-15.4954666, lng:-70.1416507},
+                  draggable:true,
+                })
+                markers.setVisible(false)
+              }
+              else{
+                map2 = new google.maps.Map(document.getElementById('map2'), {
+                  zoom: 16,
+                  center: {lat: parseFloat(latVal), lng:parseFloat(lngVal)}
+                })
+
+                markers = new google.maps.Marker({
+                  map: map2,
+                  title: 'Hello World!',
+                  position: {lat: parseFloat(latVal), lng:parseFloat(lngVal)},
+                  draggable:true,
+                })
+              }
+              google.maps.event.addListener(markers,'dragend',function(event) {
+                document.getElementById("latMap").value = event.latLng.lat()
+                document.getElementById("lngMap").value =event.latLng.lng()
+              })
+              let input = document.getElementById('pac-input')
+              let pacInputAutocomplete = document.getElementById('pac-input-autocomplete')
+
+
+              let searchBox = new google.maps.places.SearchBox(input)
+
+              input.addEventListener('change', function () {
+                let val = input.value
+                pacInputAutocomplete.value = val
+              })
+
+
+              map2.addListener('bounds_changed', function () {
+                searchBox.setBounds(map2.getBounds())
+              });
+
+          searchBox.addListener('places_changed', function () {
+
+
+            let places = searchBox.getPlaces()
+
+            if (places.length == 0) {
+              return;
+            }
+            markers.setMap(null);
+
+
+            markers = []
+
+
+            let bounds = new google.maps.LatLngBounds()
+
+            places.forEach(function (place) {
+              if (!place.geometry) {
+
+                return;
+              }
+
+              markers = new google.maps.Marker({
+                map: map2,
+                title: place.name,
+                position: place.geometry.location,
+                draggable:true,
+              });
+
+              if (place.geometry.viewport) {
+                bounds.union(place.geometry.viewport);
+                document.getElementById("latMap").value = place.geometry.viewport.pa.g;
+                document.getElementById("lngMap").value =place.geometry.viewport.ka.g;
+                // console.log(place.geometry.viewport.pa.g);
+
+              } else {
+                bounds.extend(place.geometry.location)
+                document.getElementById("latMap").value = place.geometry.location.pa.g;
+                document.getElementById("lngMap").value =place.geometry.location.ka.g;
+              }
+            });
+            map2.fitBounds(bounds);
+
+            google.maps.event.addListener(markers,'dragend',function(event) {
+              document.getElementById("latMap").value = event.latLng.lat()
+              document.getElementById("lngMap").value =event.latLng.lng()
+            })
+          })
+          }
+
+
+            if (document.getElementById('map')) {
+              let map = document.getElementById('map')
+              let mapLng = parseFloat(map.dataset.lng)
+              let mapLat = parseFloat(map.dataset.lat)
+
+              let marker;
+              if (map.dataset.lng == '' && map.dataset.lat == '') {
+                map = new google.maps.Map(map, {
+                  center: { lat: -15.4954666, lng:-70.1416507},
+                  zoom: 13,
+                  mapTypeId: 'roadmap',
+                })
+              }
+              else {
+                console.log('ss');
+
+                map = new google.maps.Map(map, {
+                  center: { lat: mapLat, lng: mapLng},
+                  zoom: 16,
+                  mapTypeId: 'roadmap',
+                })
+                marker = new google.maps.Marker({
+                  map: map,
+                  title: 'Hello World!',
+                  position: {lat:mapLat , lng: mapLng},
+                })
+              }
+            }
+          }
+          if (document.getElementById("person_department_id") ) {
+            let departments = document.getElementById("person_department_id")
+            let provinces = document.getElementById("person_province_id")
+            let districts = document.getElementById("person_district_id")
+
+              console.log('aes');
+
+            departments.addEventListener('change', () => {
+            provinces.options.length = 0;
+
+              $.ajax({
+                url: `/api/v1/catalogue_locations/?catalogue_type=0&parent_id=${departments.value}`,
+                type: 'GET',
+                success: function(data) {
+
+                  let datas = data;
+                  data.forEach((data, i) => {
+
+                    var opt1 = document.createElement("option");
+                    var opt2 = document.createElement("option");
+                    opt1.text = data.name;
+                    opt1.value = data.id;
+                    provinces.add(opt1);
+                  })
+                }
+              })
+            })
+            provinces.addEventListener('change', () => {
+            districts.options.length = 0;
+              $.ajax({
+                url: `/api/v1/catalogue_locations/?catalogue_type=1&parent_id=${provinces.value}`,
+                type: 'GET',
+                success: function(data) {
+                  data.forEach((data, i) => {
+                    let opt1 = document.createElement("option");
+                    let opt2 = document.createElement("option");
+                    opt1.text = data.name;
+                    opt1.value = data.id;
+                    districts.add(opt1);
+                  })
+                }
+              })
+            })
+
+          }
+
+      </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAIrv5vCv0fQtn7h80Zuj_YfkxtzyboNg&libraries=places&callback=initMap"
+        async defer></script>
+
+  </script>
+  </body>
+
+</html>

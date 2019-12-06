@@ -1,0 +1,90 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  verify:
+    name: Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache gems
+        uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.3
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+      - name: Install dependencies
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+          yarn install
+
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          RAILS_ENV: test
+          PGHOST: localhost
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          RAILS_ENV=test bin/rails db:create
+          RAILS_ENV=test bin/rails db:migrate
+      - name: Run Bundler Audit
+        run: bundle exec bundler-audit --update
+      - name: Run Brakeman
+        run: bundle exec brakeman -q -w2
+      - name: Run tests
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          RAILS_ENV: test
+          PGHOST: localhost
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          bin/rake db:migrate RAILS_ENV=test
+          bundle exec rspec
+      # - name: Cypress run
+      #   env:
+      #     DATABASE_URL: postgres://postgres:@localhost:5432/test
+      #     RAILS_ENV: test
+      #     PGHOST: localhost
+      #     RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      #   run: |
+      #     bin/rails server -e test -p 5002 &; yarn cypress run --project ./spec --record --key 72c9e9d3-5dda-4cb5-bc10-9f18cde20b83
+      - name: Deploy to Heroku
+        env:
+          HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
+          HEROKU_APP_NAME: "project-visitation"
+        if: github.ref == 'refs/heads/master' && job.status == 'success'
+        run: git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git origin/master:master

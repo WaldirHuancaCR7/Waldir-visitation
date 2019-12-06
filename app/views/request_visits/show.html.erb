@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="PanelTransparent">
+    <div>
+      <p class="PanelTransparent-title">Visita</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class='col-8'>
+      <div class="panel">
+        <div class='visit'>
+          <div class='visit-photo'>
+              <%= @person.first_name.split.map(&:first).join %>
+          </div>
+          <div class='visit-personal'>
+            <p class='visit-personal-fullName'><%= @person.full_name %></p>
+            <div class='visit-personal-item'>
+              <p class='visit-personal-item-otherData'><%= @person.phone %></p>
+              <i class="fas fa-phone visit-personal-item-phone"></i>
+            </div>
+            <div class='visit-personal-item'>
+              <p class='visit-personal-item-otherData'> <%= @student.address %></p>
+              <i class="fas fa-map-marker-alt visit-personal-item-ubication"></i>
+            </div>
+          </div>
+        </div>
+        <div class='contentTexts'>
+          <li><%= @student.professional_school.name %></li>
+          <li><%= @student.student_type %></li>
+          <li><%= @student.reference %></li>
+          <li><%= @person.dni %></li>
+        </div>
+        <div class="contentSwicth visitContentSwicth">
+            <%if @visit.status == 'pendient' %>
+              <p class="switch  switch-pendient">Pendiente</p>
+            <% end %>
+            <%if @visit.status == 'in_process' %>
+              <p class="switch  switch-in_process">En Proceso</p>
+            <% end %>
+            <%if @visit.status == 'visited' %>
+              <p class="switch  switch-visited">Visitado</p>
+            <% end %>
+            <%if @visit.status == 'closed' %>
+              <p class="switch  switch-closed">Cerrado</p>
+            <% end %>
+          </div>
+      </div>
+    </div>
+    <div class='col-4'>
+      <div class="panel createVisit">
+        <p class='createVisit-title'>Crear Visita</p>
+        <%= form_for @visit do |f|%>
+          <div class="form-group row ">
+            <%= f.hidden_field :student_id, value: @student.id%>
+            <%= f.label :scheduled_date, 'Fecha y hora', class: "col-sm-4 col-form-label createVisitText " %>
+            <div class="col-sm-8 contentInput">
+              <%= f.text_field :scheduled_date, class: "form-control input datepicker", required: true %>
+            </div>
+          </div>
+          <%= f.submit 'Crear', class: "btn btn-primary button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row margin-top-30">
+    <div class="col-12">
+      <div class="panel">
+        <div class="panel-header">
+          <p class="panel-header-title">Ubicación</p>
+        </div>
+        <div class="panel-body">
+          <div id='map' data-lng="<%= @student.lng %>" data-lat="<%= @student.lat %>" style="width:100%;height:400px;" ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    flatpickr(".datepicker", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i"
+    });
+  </script>
+  <div class='margin-top-30 contentButtons'>
+    <%= link_to 'Regresar', request_visits_path, class: 'button' %>
+    <%= link_to 'Visitar', request_visit_path(id: @student.id), class: 'button', method: :patch %>
+  </div>
+
+</div>

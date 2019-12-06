@@ -1,0 +1,45 @@
+<div class="container ">
+  <div class="panel">
+    <div class="panel-header">
+      <p class="panel-header-title">Reportes</p>
+    </div>
+    <div class="panel-body">
+
+      <%= form_tag "/report", method: :get do %>
+      <div class='row'>
+        <div class='col-md-3 col-sm-12'>
+          <div class="contentInput margin-top-15 ">
+            <label class="label">DESDE:</label>
+            <%= text_field_tag 'from', @from, class: 'datepicker input' %>
+          </div>
+        </div>  
+        <div class='col-md-3 col-sm-12'>
+          <div class="contentInput margin-top-15 ">
+            <label class="label">A:</label>
+            <%= text_field_tag 'to', @to, class: 'datepicker input' %>
+          </div>
+        </div>
+        <div class='col-md-3 col-sm-12 margin-top-15'>
+          <div class='contentButtonsReportGraph'>
+            <%= submit_tag "Generar reporte" ,class:'button'%>
+          </div> 
+
+        </div>
+        <div class='col-md-3 col-sm-12 margin-top-15'> 
+          <div class='contentButtonsReportGraph'>
+            <%= submit_tag "Descargar" ,class:'button'%>        
+          </div> 
+        </div>
+      </div>
+      <% end %>
+
+      <%= column_chart @visits, legend: 'top', stacked: true %>
+    </div>
+  </div>
+</div>
+
+<script>
+  flatpickr(".datepicker", {
+    dateFormat: "d-m-Y"
+  });
+</script>

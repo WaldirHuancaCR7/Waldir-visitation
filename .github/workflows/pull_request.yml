@@ -1,0 +1,61 @@
+name: "Pull Request"
+on:
+  push:
+    branches:
+      - release/*
+
+jobs:
+  verify:
+    name: Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache gems
+        uses: actions/cache@preview
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.3
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+      - name: Install dependencies
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          yarn install
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          RAILS_ENV: test
+          PGHOST: localhost
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          bin/rails db:prepare
+      - name: Run Bundler Audit
+        run: bundle exec bundler-audit --update
+      - name: Run Brakeman
+        run: bundle exec brakeman -q -w2
+      - name: Run tests
+        run: bundle exec rspec

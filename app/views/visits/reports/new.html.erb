@@ -1,0 +1,118 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-12'>
+      <div class="panel">
+        <div class='visit'>
+          <div class='visit-photo'>
+            <% unless @student.photo.nil? %>
+              <%= @person.full_name.chr %>
+            <% else %>
+              <%= image_tag @student.photo, width: '100%', height: '100%'%>
+            <% end %>
+          </div>
+          <div class='visit-personal'>
+            <p class='visit-personal-fullName'> <%= @person.full_name %></p>
+            <div class='visit-personal-item'>
+              <p class='visit-personal-item-otherData'> <%= @person.phone %> </p>
+              <i class="fas fa-phone visit-personal-item-phone"></i>
+            </div>
+            <div class='visit-personal-item'>
+              <p class='visit-personal-item-otherData'> <%= @student.address  %></p>
+              <i class="fas fa-map-marker-alt visit-personal-item-ubication"></i>
+            </div>
+          </div>
+          <div class="contentSwicth visitContentSwicth">
+            <%if @visit.status == 'pendient' %>
+              <p class="switch  switch-pendient">Pendiente</p>
+            <% end %>
+            <%if @visit.status == 'in_process' %>
+              <p class="switch  switch-in_process">En Proceso</p>
+            <% end %>
+            <%if @visit.status == 'visited' %>
+              <p class="switch  switch-visited">Visitado</p>
+            <% end %>
+            <%if @visit.status == 'closed' %>
+              <p class="switch  switch-closed">Cerrado</p>
+            <% end %>
+          </div>
+        </div>
+        <div class='contentTexts'>
+          <li> <%= @student.professional_school.name %></li>
+          <li><%= @student.student_type %> </li>
+          <li> <%= @student.reference %> </li>
+          <li> <%= @person.dni %></li>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-12'>
+      <div class="panel">
+        <div class="panel-header">
+          <p class="panel-header-title">Reporte</p>
+        </div>
+        <div class="panel-body">
+          <%= form_for @report, url: visit_report_path, multiple: true, direct_upload: true do |f|%>
+            <% unless @report.errors.empty? %>
+              <ul>
+                <% @report.errors.full_messages.each do |error| %>
+                  <li><%= error %></li>
+                <% end %>
+              </ul>
+            <% end %>
+            <div class='row Report'>
+              <div class="col-md-6 col-sm-12">
+                <%= f.label :academic_aspect, 'Aspecto Academico' %>
+                <%= f.text_area :academic_aspect, class: "form-control", required: true %>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <%= f.label :psychological_aspect, 'Aspecto Psicologico' %>
+                <%= f.text_area :psychological_aspect, class: "form-control", required: true %>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <%= f.label :health_aspect, 'Aspecto de Salud' %>
+                <%= f.text_area :health_aspect, class: "form-control", required: true %>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <%= f.label :economic_aspect, 'Aspecto economico' %>
+                <%= f.text_area :economic_aspect, class: "form-control", required: true %>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <%= f.label :spiritual_aspect, 'Aspecto Espiritual' %>
+                <%= f.text_area :spiritual_aspect, class: "form-control", required: true %>
+              </div>
+              
+
+              <div class="col-12">
+                <div class='reportsTitle'>
+                  Estudiantes que necesitan ser derivado a:
+                </div>
+                <div class='reportDerivation'>
+                  <%= f.collection_check_boxes(:derivation_ids, Derivation.all, :id, :name) %>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <%= f.label :others, 'Otros' %>
+                <%= f.text_area :others, class: "form-control", required: true %>
+              </div>
+
+              <div class="col-12">
+                <div class='reportsTitle'>
+                  Evidencia
+                </div>
+                  <%= f.file_field :evidence, class: "form-control", required: true %>
+              </div>
+
+            </div>
+              <div class='margin-top-30 contentButtons contentButtonsEnd'>
+                <%= f.submit 'Enviar Reporte', class: "button"%>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

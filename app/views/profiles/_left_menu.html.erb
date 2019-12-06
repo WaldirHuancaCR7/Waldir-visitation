@@ -1,0 +1,26 @@
+<div class='panel'>
+  <div class='Profile'>
+    <div class='Profile-logoImg'>
+      <%= current_user.person.first_name.split.map(&:first).join %> 
+    </div>
+    <div>
+      <p class='Profile-name'><%= current_user.person.decorate.full_name %></p>
+      <p class='Profile-name'><%= @person.person_type%></p>      
+    </div>
+  </div>
+  <div>
+    <div class='Profile-data'>
+      <p class='Profile-data-text'>Email: <%= current_user.email %></p>
+      <p class='Profile-data-text'>Celular: <%= @person.phone %></p>  
+    </div>
+    
+
+    <div class='ProfileActions'>
+      <div class='ProfileActions-option'>
+        <i class="fas fa-address-card ProfileActions-option-icon"></i>
+        <p class='ProfileActions-option-text'><%= link_to "Datos personales" , profile_path %> </p>
+      </div>
+    </div>
+      
+  </div>        
+</div>

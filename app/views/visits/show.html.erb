@@ -1,0 +1,190 @@
+<div class="container">
+  <div class="PanelTransparent">
+    <div>
+      <p class="PanelTransparent-title">Visita</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class='col-8'>
+      <div class="panel">
+        <div class='visit'>
+          <div class='visit-photo'>
+            <%= @student.person.first_name.split.map(&:first).join %>
+
+          </div>
+          <div class='visit-personal'>
+            <p class='visit-personal-fullName'><%= @person.full_name %></p>
+            <div class='visit-personal-item'>
+              <p class='visit-personal-item-otherData'><%= @person.phone %></p>
+              <i class="fas fa-phone visit-personal-item-phone"></i>
+            </div>
+            <div class='visit-personal-item'>
+              <p class='visit-personal-item-otherData'> <%= @student.address %></p>
+              <i class="fas fa-map-marker-alt visit-personal-item-ubication"></i>
+            </div>
+          </div>
+          <div class="contentSwicth visitContentSwicth">
+            <%if @visit.status == 'pendient' %>
+              <p class="switch  switch-pendient">Pendiente</p>
+            <% end %>
+            <%if @visit.status == 'in_process' %>
+              <p class="switch  switch-in_process">En Proceso</p>
+            <% end %>
+            <%if @visit.status == 'visited' %>
+              <p class="switch  switch-visited">Visitado</p>
+            <% end %>
+            <%if @visit.status == 'closed' %>
+              <p class="switch  switch-closed">Cerrado</p>
+            <% end %>
+          </div>
+        </div>
+        <div class='contentTexts'>
+          <li><%= @student.professional_school.name %></li>
+          <li><%= @student.student_type %></li>
+          <li><%= @student.reference %></li>
+          <li><%= @person.dni %></li>
+        </div>
+      </div>
+    </div>
+    <div class='col-4'>
+      <div class="panel createVisit">
+        <p class='createVisitText'><strong>Fecha programada: </strong><%= @visit.format_scheduled_date %></p>
+        <p class='createVisitText'><strong>Visita iniciada: </strong><%= @visit.format_visit_date %></p>
+        <p class='createVisitText'><strong>Visita Terminada: </strong><%= @visit.format_visit_date_finished %></p>
+        <p class='createVisitText'><strong>Reporte enviado: </strong><%= @visit.format_closing_date %></p>
+      </div>
+    </div>
+  </div>
+  <div class="row margin-top-30">
+    <%if @visit.status == 'pendient' %>
+      <div class="col-12">
+        <div class="panel">
+          <div class="panel-header">
+            <p class="panel-header-title">Ubicación</p>
+          </div>
+          <div class="panel-body">
+            <div id='map'data-lng="<%= @student.lng %>" data-lat="<%= @student.lat %>" id='MapUbication' style="width:100%;height:400px;"></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%if @visit.status == 'in_process'   %>
+      <div class="col-8">
+        <div class="panel">
+          <div class="panel-header">
+            <p class="panel-header-title">Reportes</p>
+          </div>
+          <div class="panel-body">
+            <div class='NotReportContent'>
+              <i class="fas fa-exclamation-triangle NotReportContent-icon"></i>
+              <p class='NotReportContent-text'>Aun no se envió el reporte</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="panel">
+          <div class="panel-header">
+            <p class="panel-header-title">Evidencia</p>
+          </div>
+          <div class="panel-body">
+            <div class='NotReportContent'>
+              <i class="fas fa-exclamation-triangle NotReportContent-icon"></i>
+              <p class='NotReportContent-text'>Aun no se envió el reporte</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%if @visit.status == 'closed' %>
+      <div class="col-8">
+        <div class="panel">
+          <div class="panel-header">
+            <p class="panel-header-title">Reportes</p>
+          </div>
+          <div class="panel-body">
+            <div class='row'>
+              <div class='col-6'>
+                <div class='ReportsShowForm'>
+                  <p class='ReportsShowForm-title'>Aspecto Formativo</p>
+                  <div class='ReportsShowForm-text'><%= @visit.poll.academic_aspect %></div>
+                </div>
+              </div>
+              <div class='col-6'>
+                <div class='ReportsShowForm'>
+                  <p class='ReportsShowForm-title'>Aspecto Psicologico</p>
+                  <div class='ReportsShowForm-text'><%= @visit.poll.psychological_aspect %></div>
+                </div>
+              </div>
+              <div class='col-6'>
+                <div class='ReportsShowForm'>
+                  <p class='ReportsShowForm-title'>Aspecto de Salud</p>
+                  <div class='ReportsShowForm-text'><%= @visit.poll.health_aspect %></div>
+                </div>
+              </div>
+              <div class='col-6'>
+                <div class='ReportsShowForm'>
+                  <p class='ReportsShowForm-title'>Aspecto economico</p>
+                  <div class='ReportsShowForm-text'><%= @visit.poll.economic_aspect %></div>
+                </div>
+              </div>
+              <div class='col-6'>
+                <div class='ReportsShowForm'>
+                  <p class='ReportsShowForm-title'>Aspecto Espiritual</p>
+                  <div class='ReportsShowForm-text'><%= @visit.poll.spiritual_aspect %></div>
+                </div>
+              </div>
+              <div class='col-12'>
+                <div class='ReportsShowForm'>
+                  <p class='ReportsShowForm-titleContent'>El estudiantes necesita ser derivado a:</p>
+                  <div class='ReportsShowForm-text'>psicologico etc</div>
+                </div>
+              </div>
+              <div class='col-12'>
+                <div class='ReportsShowForm'>
+                  <p class='ReportsShowForm-title'>Otro</p>
+                  <div class='ReportsShowForm-text'><%= @visit.poll.others %></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="panel">
+          <div class="panel-header">
+            <p class="panel-header-title">Evidencia</p>
+          </div>
+          <div class="panel-body">
+            <div class='reportContentImg'>
+              <%= image_tag  @visit.poll.evidence  %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class='row'>
+    <div class='col-12'>
+      <div class='margin-top-30 contentButtons contentButtonsEnd'>
+        <%if @visit.status == 'pendient' %>
+          <%= form_for @visit do |f| %>
+            <%= f.hidden_field :status, value: 'in_process' %>
+            <%= f.submit 'Iniciar Visita', class: "button"%>
+          <% end %>
+        <% end %>
+
+        <%if @visit.status == 'in_process' %>
+          <%= form_for @visit do |f| %>
+            <%= f.hidden_field :status, value: 'visited' %>
+            <%= f.submit 'Terminar Visita', class: "button"%>
+          <% end %>
+        <% end %>
+
+        <%if @visit.status == 'visited' %>
+          <%= link_to 'Llenar Reporte', new_visit_report_path(visit_id: @visit.id),  class: 'button' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

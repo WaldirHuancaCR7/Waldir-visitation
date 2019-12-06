@@ -1,0 +1,33 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6">
+      <div class="panel">
+        <div class="panel-header">
+          <p class="panel-header-title">Durante los ultimo 5 meses</p>
+        </div>
+        <div class="panel-body">
+          <%= column_chart @last_months, legend: 'top' %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <div class="panel">
+        <div class="panel-header">
+          <p class="panel-header-title">En la ultima semana</p>
+        </div>
+        <div class="panel-body">
+          <%= column_chart @last_week, legend: 'top', download: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-sm-12 col-md-6'>
+      <%= react_component("Pendient/brain/Pendient") %>
+    </div>
+    <div class='col-sm-12 col-md-6'>
+      <%= react_component("MissingReports/brain/MissingReports") %>
+    </div>
+  </div>
+</div>

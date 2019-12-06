@@ -1,0 +1,10 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Reporte") do |sheet|
+  sheet.add_row %w(id folio status Nombre Apellido Fecha_de_visita Fecha_de_fin Carrera Ciclo Grupo Direccion Tipo Religion Aspecto_academico Aspecto_psicologico Aspecto_salud Aspecto_economico Aspecto_espiritual Otros)
+
+  @visits.each do |visit|
+    sheet.add_row [visit.id, visit.folio, t("visits.statuses.#{visit.status}"), visit.person.first_name , visit.person.last_name , visit.visit_date , visit.visit_date_finished ,visit.student.professional_school.name ,visit.student.study_cycle.name , visit.student.study_group.name ,
+     visit.student.address ,visit.student.student_type, visit.student.religion.name , visit.poll&.academic_aspect, visit.poll&.psychological_aspect, visit.poll&.health_aspect , visit.poll&.economic_aspect , visit.poll&.spiritual_aspect , visit.poll&.others] 
+  end
+end
