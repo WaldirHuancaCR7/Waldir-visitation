@@ -22,7 +22,7 @@ gem 'axlsx_rails', '~> 0.6.0'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'kaminari', '~> 1.1', '>= 1.1.1'
+gem 'kaminari', '~> 1.2'
 gem 'api-pagination', '~> 4.8', '>= 4.8.2'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
