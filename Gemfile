@@ -45,7 +45,7 @@ gem 'devise', '~> 4.7', '>= 4.7.1'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'pundit', '~> 2.1'
 gem 'groupdate'
-gem 'chartkick', '~> 3.3'
+gem 'chartkick', '~> 3.4'
 
 gem 'bootstrap', '~> 4.3.1'
 
